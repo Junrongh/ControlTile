@@ -48,13 +48,12 @@ After running the setup script and placing the dataset and checkpoints in the co
     |   |   |   |-- metadata
     |   |   |   |-- render
     |   |   |   |-- texture
-    |   |   |   |-- texture
     |   |   |
     |   |   |-- ctile-baseline
     |   |       |-- metadata
     |   |       |-- raw
     |   |       |-- synthesis
-    |   |       |-- ratexture
+    |   |       |-- texture
     |
     |   |-- ckpt
     |       |-- model-lora.ckpt
