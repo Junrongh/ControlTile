@@ -9,7 +9,7 @@
     ·
     <a href="https://hongbofu.people.ust.hk/"><strong>Hongbo FU<strong></a>
     ·
-    <a href="https://scholars.cityu.edu.hk/en/persons/jingliao/"><strong>Jing LIAO</strong></a>
+    <a href="https://scholars.cityu.edu.hk/en/persons/jingliao/"><strong>Jing LIAO*</strong></a>
   </p>
   <h2 align="center">SIGGRAPH 2026 (Conference)</h2>
   <div align="center">
