@@ -1,0 +1,84 @@
+train_phase1:
+  stage: train
+  diffusion_model: black-forest-labs/FLUX.1-Kontext-dev
+  model_output: output/ckpt
+  output_name: phase1-blender
+  seed: null
+  devices: 0,1,2,3
+  batch_size: 1
+  inference_timesteps: 14
+  num_train_epochs: 100
+  checkpoints_total_limit: 1
+  val_per_epoch: 5
+  learning_rate: 1e-4
+  condition_column: condition
+  attn_mask: true
+  text_encoder: false
+  clip_text_pt: clip_text_embeds_task.pt
+  t5_text_pt: t5_text_embeds_task.pt
+  dropout: 0.0
+  lora_rank: 128
+  lora_alpha: 128
+  lora_modules: (.*transformer_blocks\.[0-9]+\.(norm|norm1)\.linear|.*transformer_blocks\.[0-9]+\.attn\.(to_k|to_q|to_v|to_add_out)|.*transformer_blocks\.[0-9]+\.attn\.to_out\.0|.*single_transformer_blocks\.[0-9]+\.attn\.to_out|.*single_transformer_blocks\.[0-9]+\.(proj_mlp|proj_out)|.*(?<!single_)transformer_blocks\.[0-9]+\.ff\.net\.2|.*(?<!single_)transformer_blocks\.[0-9]+\.ff\.net\.0\.proj|.*(?<!single_)transformer_blocks\.[0-9]+\.norm1_context\.linear|.*(?<!single_)transformer_blocks\.[0-9]+\.ff_context\.net\.0\.proj|.*(?<!single_)transformer_blocks\.[0-9]+\.ff_context\.net\.2|.*(?<!single_)transformer_blocks\.[0-9]+\.attn\.(to_add_out|add_k_proj|add_q_proj|add_v_proj))
+  logging_dir: output/logs
+  data_dir: dataset/ctile_dataset
+  # phase_1: blender dataset
+  metadata: metadata/total_train_updated.jsonl
+  val_metadata: metadata/total_val_updated.jsonl
+  resolution: 512
+  resume: null
+
+train_phase2:
+  stage: train
+  diffusion_model: black-forest-labs/FLUX.1-Kontext-dev
+  model_output: output/ckpt
+  output_name: phase2-adaptation
+  seed: null
+  devices: 0,1,2,3
+  batch_size: 1
+  inference_timesteps: 14
+  num_train_epochs: 100
+  checkpoints_total_limit: 1
+  val_per_epoch: 5
+  learning_rate: 1e-4
+  condition_column: condition
+  attn_mask: true
+  text_encoder: false
+  clip_text_pt: clip_text_embeds_task.pt
+  t5_text_pt: t5_text_embeds_task.pt
+  dropout: 0.0
+  lora_rank: 128
+  lora_alpha: 128
+  lora_modules: (.*transformer_blocks\.[0-9]+\.(norm|norm1)\.linear|.*transformer_blocks\.[0-9]+\.attn\.(to_k|to_q|to_v|to_add_out)|.*transformer_blocks\.[0-9]+\.attn\.to_out\.0|.*single_transformer_blocks\.[0-9]+\.attn\.to_out|.*single_transformer_blocks\.[0-9]+\.(proj_mlp|proj_out)|.*(?<!single_)transformer_blocks\.[0-9]+\.ff\.net\.2|.*(?<!single_)transformer_blocks\.[0-9]+\.ff\.net\.0\.proj|.*(?<!single_)transformer_blocks\.[0-9]+\.norm1_context\.linear|.*(?<!single_)transformer_blocks\.[0-9]+\.ff_context\.net\.0\.proj|.*(?<!single_)transformer_blocks\.[0-9]+\.ff_context\.net\.2|.*(?<!single_)transformer_blocks\.[0-9]+\.attn\.(to_add_out|add_k_proj|add_q_proj|add_v_proj))
+  logging_dir: output/logs
+  data_dir: dataset/ctile_dataset
+  # phase_2: adaptation dataset
+  metadata: metadata/edit_train_metadata.jsonl
+  val_metadata: metadata/edit_val_metadata.jsonl
+  resolution: 1024
+  resume: null # <- replace it with phase1 last ckpt
+
+test:
+  stage: test
+  diffusion_model: black-forest-labs/FLUX.1-Kontext-dev
+  seed: 42
+  train_devices: 0,1,2,3
+  device: 0
+  batch_size: 4
+  inference_timesteps: 50
+  text_encoder: false
+  clip_text_pt: clip_text_embeds_vector.pt
+  t5_text_pt: t5_text_embeds_vector.pt
+  grid: standard # or fisheye, swirl
+  attn_mask: true
+  lora_rank: 128
+  lora_alpha: 128
+  dropout: 0.0
+  lora_modules: (.*transformer_blocks\.[0-9]+\.(norm|norm1)\.linear|.*transformer_blocks\.[0-9]+\.attn\.(to_k|to_q|to_v|to_add_out)|.*transformer_blocks\.[0-9]+\.attn\.to_out\.0|.*single_transformer_blocks\.[0-9]+\.attn\.to_out|.*single_transformer_blocks\.[0-9]+\.(proj_mlp|proj_out)|.*(?<!single_)transformer_blocks\.[0-9]+\.ff\.net\.2|.*(?<!single_)transformer_blocks\.[0-9]+\.ff\.net\.0\.proj|.*(?<!single_)transformer_blocks\.[0-9]+\.norm1_context\.linear|.*(?<!single_)transformer_blocks\.[0-9]+\.ff_context\.net\.0\.proj|.*(?<!single_)transformer_blocks\.[0-9]+\.ff_context\.net\.2|.*(?<!single_)transformer_blocks\.[0-9]+\.attn\.(to_add_out|add_k_proj|add_q_proj|add_v_proj))
+  data_dir: dataset/ctile_dataset
+  metadata: metadata/edit_test_metadata.jsonl
+  val_metadata: metadata/edit_test_metadata.jsonl
+  logging_dir: output/logs
+  resolution: 1024
+  ckpt: null # <- put ckpt here
+  img_output_folder: output

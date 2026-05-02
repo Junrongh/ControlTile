@@ -1,0 +1,22 @@
+[
+    {
+        "file": "text_embeds_1",
+        "prompt": "Apply 2D transformation to this image while maintaining the texture details unchanged. Fill the image with tiles of given texture."
+    },
+    {
+        "file": "text_embeds",
+        "prompt": "Apply 2D transformation to this image while maintaining the texture details unchanged."
+    },
+    {
+        "file": "text_embeds_transform_it",
+        "prompt": "Transform it"
+    },
+    {
+        "file": "text_embeds_vector",
+        "prompt": "Apply texture rotation, scaling, and translation to the masked region of the reference image while maintaining the texture details unchanged, keep the geometry and lighting conditions unchanged"
+    },
+    {
+        "file": "text_embeds_task",
+        "prompt": "Seamlessly map the reference texture into the black masked region of the scene. The texture must strictly retain its original structural details and high-frequency patterns without distortion. Ensure the mapped texture follows the scene's geometric perspective and physically accurate lighting, including proper shading and ambient occlusion to match the global illumination. The surrounding unmasked environment must remain pixel-perfect and unchanged"
+    }
+]
